@@ -9,7 +9,11 @@ const props = defineProps({
   }
 });
 
-const avatarUrl = computed(() => props.config?.avatar_url ?? '/img/avatar.png');
+const ensureTrailingSlash = (value) => (value.endsWith('/') ? value : `${value}/`);
+const assetBase = ensureTrailingSlash(import.meta.env.BASE_URL || '/');
+const defaultAvatar = `${assetBase}img/avatar.png`;
+
+const avatarUrl = computed(() => props.config?.avatar_url ?? defaultAvatar);
 const authorName = computed(() => props.config?.author_name ?? 'Marcel Ochsendorf');
 const appName = computed(() => props.config?.app_name ?? 'Terminal Node');
 const version = computed(() => props.config?.version ?? '0.0');

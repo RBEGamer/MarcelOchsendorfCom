@@ -44,6 +44,9 @@ const commandDeck = [
   { command: 'clear', description: 'Reset the console' }
 ];
 
+const ensureTrailingSlash = (value) => (value.endsWith('/') ? value : `${value}/`);
+const assetBase = ensureTrailingSlash(import.meta.env.BASE_URL || '/');
+
 const prompt = computed(() => {
   const host = config.value?.hostname ?? 'crt-node';
   return `guest@${host}:~$`;
@@ -289,7 +292,7 @@ function bootSequence() {
 async function fetchConfig() {
   try {
     pushMessage('Establishing secure uplink...', 'hint');
-    const response = await fetch(`/config/config.json?ts=${Date.now()}`);
+    const response = await fetch(`${assetBase}config/config.json?ts=${Date.now()}`);
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
