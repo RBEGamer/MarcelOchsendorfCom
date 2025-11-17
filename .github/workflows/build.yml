@@ -19,18 +19,21 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          cache-dependency-path: src/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+        working-directory: src
 
       - name: Build static site
         run: npm run build
+        working-directory: src
 
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist
+          path: src/dist
 
       - name: Build Docker image
-        run: docker build -t marcelochsendorf-terminal:ci .
+        run: docker build -f src/Dockerfile -t marcelochsendorf-terminal:ci src
