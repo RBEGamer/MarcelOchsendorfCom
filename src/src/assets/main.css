@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+:root {
+  color-scheme: dark;
+  --crt-bg: #030712;
+  --crt-inner: radial-gradient(circle at top, rgba(18, 42, 66, 0.9), #040b18 65%, #02050d);
+  --crt-grid: rgba(46, 238, 199, 0.08);
+  --crt-text: #dff7f0;
+  --crt-dim: #6bb9b0;
+  --crt-accent: #48ffcb;
+  --crt-warning: #ff7b7b;
+  --crt-yellow: #f7f3a6;
+  --font-terminal: 'VT323', ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  --font-pixel: 'Press Start 2P', var(--font-terminal);
+  font-size: 62.5%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-terminal);
+  font-size: clamp(1.4rem, 1.7vw, 1.8rem);
+  min-height: 100vh;
+  background: #000;
+  color: var(--crt-text);
+}
+
+#app {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--crt-grid);
+  border-radius: 1rem;
+}

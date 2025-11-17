@@ -1,0 +1,45 @@
+stages:
+  - build
+  - container
+
+variables:
+  NODE_ENV: production
+
+cache:
+  key: npm-cache
+  paths:
+    - .npm
+
+build_pages:
+  stage: build
+  image: node:20
+  script:
+    - cd src
+    - npm ci
+    - npm run build
+    - rm -rf ../public
+    - mv dist ../public
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 week
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+container_image:
+  stage: container
+  image: docker:24
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+  script:
+    - docker build -f src/Dockerfile -t "$CI_REGISTRY_IMAGE:${CI_COMMIT_SHORT_SHA}" src
+    - |
+      if [ "$CI_COMMIT_BRANCH" = "$CI_DEFAULT_BRANCH" ]; then
+        docker push "$CI_REGISTRY_IMAGE:${CI_COMMIT_SHORT_SHA}";
+      fi
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
