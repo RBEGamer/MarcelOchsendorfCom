@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { resolveAssetUrl } from '../utils/assetPaths';
 
 const props = defineProps({
   config: {
@@ -9,9 +10,7 @@ const props = defineProps({
   }
 });
 
-const ensureTrailingSlash = (value) => (value.endsWith('/') ? value : `${value}/`);
-const assetBase = ensureTrailingSlash(import.meta.env.BASE_URL || '/');
-const defaultAvatar = `${assetBase}img/avatar.png`;
+const defaultAvatar = resolveAssetUrl('img/avatar.png').toString();
 
 const avatarUrl = computed(() => props.config?.avatar_url ?? defaultAvatar);
 const authorName = computed(() => props.config?.author_name ?? 'Marcel Ochsendorf');

@@ -4,6 +4,7 @@ import CommandPalette from './components/CommandPalette.vue';
 import HudPanel from './components/HudPanel.vue';
 import PageFooter from './components/PageFooter.vue';
 import TerminalScreen from './components/TerminalScreen.vue';
+import { resolveAssetUrl } from './utils/assetPaths';
 
 const config = ref(null);
 const loading = ref(true);
@@ -43,9 +44,6 @@ const commandDeck = [
   { command: 'version', description: 'Display deployment info' },
   { command: 'clear', description: 'Reset the console' }
 ];
-
-const ensureTrailingSlash = (value) => (value.endsWith('/') ? value : `${value}/`);
-const assetBase = ensureTrailingSlash(import.meta.env.BASE_URL || '/');
 
 const prompt = computed(() => {
   const host = config.value?.hostname ?? 'crt-node';
@@ -292,7 +290,9 @@ function bootSequence() {
 async function fetchConfig() {
   try {
     pushMessage('Establishing secure uplink...', 'hint');
-    const response = await fetch(`${assetBase}config/config.json?ts=${Date.now()}`);
+    const configUrl = resolveAssetUrl('config/config.json');
+    configUrl.searchParams.set('ts', Date.now().toString());
+    const response = await fetch(configUrl.toString());
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
