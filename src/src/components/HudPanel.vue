@@ -12,7 +12,13 @@ const props = defineProps({
 
 const defaultAvatar = resolveAssetUrl('img/avatar.png').toString();
 
-const avatarUrl = computed(() => props.config?.avatar_url ?? defaultAvatar);
+const avatarUrl = computed(() => {
+  const configured = props.config?.avatar_url;
+  if (!configured) {
+    return defaultAvatar;
+  }
+  return resolveAssetUrl(configured).toString();
+});
 const authorName = computed(() => props.config?.author_name ?? 'Marcel Ochsendorf');
 const appName = computed(() => props.config?.app_name ?? 'Terminal Node');
 const version = computed(() => props.config?.version ?? '0.0');

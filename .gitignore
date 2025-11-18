@@ -12,9 +12,9 @@ node_modules/
 src/node_modules/
 
 # Build outputs
-dist/
-src/dist/
-public/
+/dist/
+/src/dist/
+/public/
 
 # Env files
 .env
